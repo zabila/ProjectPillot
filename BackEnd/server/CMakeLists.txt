@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION ${CMAKE_VERSION})
 Project(server)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${SOURCE_DIR})
+
 find_package(Qt5Core)
 find_package(Qt5Network)
 

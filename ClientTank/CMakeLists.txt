@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.5)
+Project(ClientTank)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR})
+set(CMAKE_BINARY_DIR       ${CMAKE_SOURCE_DIR}/build-ClientTank)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/lib)

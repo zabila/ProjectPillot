@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION ${CMAKE_VERSION})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${SOURCE_DIR})
 
 find_package(Qt5 COMPONENTS Core Gui Qml Quick REQUIRED)
 

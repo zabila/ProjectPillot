@@ -1,9 +1,10 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <string>
 
-#include "common/server/serverEnums.h"
+#include "Common/network/enums.h"
 
 namespace server {
 
@@ -11,13 +12,17 @@ namespace server {
 class ServerImpl;
 
 class Server {
-public:
-  Server();
-  ~Server();
-  ServerError connectionToHostAdress(const std::string &host,
-                                     std::uint16_t port);
+  public:
+    Server();
+    ~Server();
 
-private:
-  std::unique_ptr<ServerImpl> mServerImpl;
+    ServerError setHostAddress(const std::string &host, uint16_t port);
+    ServerError connectionToHostAdress();
+    ServerError connectionToHostAdress(const std::string &host, std::uint16_t port);
+    ServerError sendToClientStdString(const std::string &text);
+    ServerError sendToClientStdInt32(std::int32_t number);
+
+  private:
+    std::unique_ptr<ServerImpl> mServerImpl;
 };
 } // namespace server
