@@ -3,7 +3,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "server/server.h"
+#include "server/Server.h"
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
@@ -13,9 +13,8 @@ int main(int argc, char *argv[]) {
         std::cout << "Server is started." << std::endl;
     }
 
-    if (server::ServerError::None == server.sendToClientStdInt32(123)) {
-        std::cout << "Send data" << std::endl;
-    }
+    int a;
+    std::cin >> a;
 
     return app.exec();
 }

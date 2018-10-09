@@ -1,4 +1,4 @@
-#include "type.h"
+#include "Types.h"
 
 bool HostAddress::isValid() { return port != 0 && host != "0.0.0.0"; }
 

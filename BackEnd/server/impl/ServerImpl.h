@@ -3,10 +3,11 @@
 #include <cstdint>
 #include <string>
 
-#include "Common/network/enums.h"
-#include "Common/network/type.h"
-#include "impl/qtServer.h"
-;
+#include <boost/asio.hpp>
+
+#include "Common/network/Enums.h"
+#include "Common/network/Types.h"
+
 namespace server {
 class ServerImpl {
   public:
@@ -17,7 +18,8 @@ class ServerImpl {
     bool sendToClientStdInt32(std::int32_t number);
 
   private:
-    QtServer mQtServer;
+    boost::asio::io_service mService;
+    boost::asio::ip::tcp::acceptor mAcceptor;
     HostAddress mHostAddress;
 };
 } // namespace server

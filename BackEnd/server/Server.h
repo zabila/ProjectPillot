@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "Common/network/enums.h"
+#include "Common/network/Enums.h"
 
 namespace server {
 
