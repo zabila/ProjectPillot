@@ -12,17 +12,15 @@ namespace server {
 class ServerImpl;
 
 class Server {
-  public:
-    Server();
-    ~Server();
+ public:
+  void init();
 
-    ServerError setHostAddress(const std::string &host, uint16_t port);
-    ServerError connectionToHostAdress();
-    ServerError connectionToHostAdress(const std::string &host, std::uint16_t port);
-    ServerError sendToClientStdString(const std::string &text);
-    ServerError sendToClientStdInt32(std::int32_t number);
+  network::ServerError setHostAddress(const std::string &host, uint16_t port);
+  network::ServerError connectionToHostAdress();
+  network::ServerError sendToClientStdString(const std::string &text);
+  network::ServerError sendToClientStdInt32(std::int32_t number);
 
-  private:
-    std::unique_ptr<ServerImpl> mServerImpl;
+ private:
+  std::shared_ptr<ServerImpl> mImpl;
 };
-} // namespace server
+}  // namespace server

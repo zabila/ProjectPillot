@@ -5,18 +5,11 @@
 
 #include "Enums.h"
 
-class HostAddress {
-  public:
-    bool isValid();
-    void reset();
-
-  private:
-    std::string host = "0.0.0.0";
-    std::uint16_t port = 0;
+struct HostAddress {
+  std::string host;
+  std::uint16_t port;
 };
 
-class Message {
-  public:
-  private:
-    network::MessageType mType;
+struct Message {
+  network::MessageType mType;
 };
