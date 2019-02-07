@@ -5,7 +5,7 @@
 namespace server {
 
 ServerImpl::ServerImpl() {
-  mTcpServer = std::make_unique<TcpServer>();
+  mTcpServer = std::make_unique<network::TcpServer>();
   qDebug() << "Construct ServerImpl";
 }
 
@@ -14,8 +14,7 @@ bool ServerImpl::connectionToHostAdress() {
     qDebug() << "mTcpServer ivalid.";
     return false;
   }
-  mTcpServer->start_server(mHostAddress.host, mHostAddress.port);
-  return true;
+  return mTcpServer->start_server();
 }
 
 bool ServerImpl::sendToClientStdString(const std::string &text) {
@@ -25,8 +24,12 @@ bool ServerImpl::sendToClientStdString(const std::string &text) {
 
 bool ServerImpl::sendToClientStdInt32(int32_t) { return true; }
 
-void ServerImpl::setHostAddress(const std::string &host, uint16_t port) {
-  mHostAddress = {host, port};
+void ServerImpl::setHostAddress(std::string &&host, uint16_t &&port) {
+  if (!mTcpServer) {
+    qDebug() << "mTcpServer ivalid.";
+    return;
+  }
+  mTcpServer->setConnectAdress({std::move(host), std::move(port)});
 }
 
 }  // namespace server

@@ -6,16 +6,24 @@
 // Qt
 #include <QtNetwork>
 
+// Common
+#include "Common/network/Types.h"
+
+namespace network {
 class TcpServer : public QObject {
   Q_OBJECT
  public:
-  TcpServer(QObject *parent = nullptr);
+  TcpServer(QObject* parent = nullptr);
 
-  void start_server(const std::string &host, uint16_t port);
+  void setConnectAdress(Adress&& adress);
+
+  bool start_server();
 
  public slots:
   void newConnection();
 
  private:
   std::unique_ptr<QTcpServer> mpQtcpServer;
+  Adress mAdress;
 };
+}  // namespace network

@@ -8,11 +8,13 @@ set(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/build/lib)
 file( GLOB HEADERS
     network/Enums.h
     network/Types.h
+    network/Converter.h
 )
 
 file( GLOB SOURCES
     network/Enums.cpp
     network/Types.cpp
+    network/Converter.cpp
 )
 
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})

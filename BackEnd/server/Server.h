@@ -15,7 +15,7 @@ class Server {
  public:
   void init();
 
-  network::ServerError setHostAddress(const std::string &host, uint16_t port);
+  network::ServerError setHostAddress(std::string &host, uint16_t port);
   network::ServerError connectionToHostAdress();
   network::ServerError sendToClientStdString(const std::string &text);
   network::ServerError sendToClientStdInt32(std::int32_t number);

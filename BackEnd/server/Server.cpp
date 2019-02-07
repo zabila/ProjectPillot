@@ -14,12 +14,11 @@ void Server::init() {
   mImpl->connectionToHostAdress();
 }
 
-network::ServerError Server::setHostAddress(const std::string &host,
-                                            uint16_t port) {
+network::ServerError Server::setHostAddress(std::string &host, uint16_t port) {
   if (!mImpl) {
     return network::ServerError::Invalid;
   }
-  mImpl->setHostAddress(host, port);
+  mImpl->setHostAddress(std::move(host), std::move(port));
   return network::ServerError::None;
 }
 

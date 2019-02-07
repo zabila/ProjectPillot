@@ -2,6 +2,10 @@
 
 #include <QtDebug>
 
+#include <unistd.h>
+
+namespace network {
+
 TcpServer::TcpServer(QObject *parent) : QObject(parent) {
   mpQtcpServer = std::make_unique<QTcpServer>();
 
@@ -11,20 +15,34 @@ TcpServer::TcpServer(QObject *parent) : QObject(parent) {
   qDebug() << "Constructor TcpServer";
 }
 
-void TcpServer::start_server(const std::string &host, uint16_t port) {
-  QHostAddress address(host.c_str());
-  qDebug() << "Start server with host:" << address << " port:" << port;
+void TcpServer::setConnectAdress(Adress &&adress) {
+  mAdress = std::move(adress);
+}
+
+bool TcpServer::start_server() {
+  bool result = false;
+  if (!mAdress.is_valid()) {
+    qDebug() << "Adress invalid.";
+    return result;
+  }
+  QHostAddress qHostAdress(std::move(mAdress.host.c_str()));
+  qDebug() << "Start server with host:" << qHostAdress
+           << " port:" << mAdress.port;
 
   if (!mpQtcpServer) {
     qDebug() << "mpQtcpServer invalid.";
-    return;
+    return result;
   }
 
-  if (!mpQtcpServer->listen(address, port)) {
-    qDebug() << "Server could not start";
+  result =
+      mpQtcpServer->listen(QHostAddress(mAdress.host.c_str()), mAdress.port);
+
+  if (result) {
+    qDebug() << "Server started.";
   } else {
-    qDebug() << "Server started!";
+    qDebug() << "Server not started.";
   }
+  return result;
 }
 
 void TcpServer::newConnection() {
@@ -32,6 +50,9 @@ void TcpServer::newConnection() {
     qDebug() << "mpQtcpServer invalid.";
     return;
   }
+
+  sleep(10000);
+
   QTcpSocket *socket = mpQtcpServer->nextPendingConnection();
 
   socket->write("Hello client\r\n");
@@ -41,3 +62,4 @@ void TcpServer::newConnection() {
 
   socket->close();
 }
+}  // namespace network
