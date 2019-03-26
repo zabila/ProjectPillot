@@ -11,12 +11,14 @@ file( GLOB HEADERS
     network/Types.h
     network/Converter.h
     logger/logger.h
+    logger/src/easylogging++.h
 )
 
 file( GLOB SOURCES
     network/Enums.cpp
     network/Types.cpp
     network/Converter.cpp
+    logger/src/easylogging++.cc
 )
 
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})

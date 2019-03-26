@@ -8,7 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #Add QT5
 find_package( Qt5 COMPONENTS Core Network Gui Widgets Qml Quick REQUIRED)
 
-find_package(easyloggingpp)
+# Easylogging++
+include_directories( Common/logger/src )
 
 set(COMMON_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 set(PROJECT_DIR_BACK_END ${CMAKE_SOURCE_DIR}/BackEnd)
