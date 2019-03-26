@@ -19,7 +19,7 @@ void ServerController::connectToServer(const network::Adress& adress) {
   REQUIRE(mpServer, "Server invalid.");
 
   mpServer->setHostAddress(adress);
-  network::ServerError error = mpServer->connectionToHostAdress();
+  network::ServerError error = mpServer->connectionToHostAddress();
 
   REQUIRE(mpViewer, "mpViewer invalid.");
   mpViewer->sendServerStatus(error == network::ServerError::None);

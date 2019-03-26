@@ -13,10 +13,10 @@ namespace network {
 class TcpServer : public QObject {
   Q_OBJECT
  public:
-  TcpServer(QObject* parent = nullptr);
-  ~TcpServer();
+  explicit TcpServer(QObject* parent = nullptr);
+  ~TcpServer() override;
 
-  void setConnectAdress(const Adress& adress);
+  void setConnectAddress(const Adress &address);
   bool StartServer();
 
  public slots:
@@ -24,8 +24,8 @@ class TcpServer : public QObject {
   void readyRead();
 
  private:
-  QTcpServer* mpQtcpServer;
-  QTcpSocket* mpQtcpSocket;
-  Adress mAdress;
+  QTcpServer* qTcpServer;
+  QTcpSocket* qTcpSocket;
+  Adress mAddress;
 };
 }  // namespace network

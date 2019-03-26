@@ -3,7 +3,7 @@
 #include "easylogging++.h"
 
 #define LOG_MESSAGE(log_level, message) \
-  LOG(log_level) << "function: " << __FUNCTION__ << " log: " << message;
+  LOG(log_level) << message;
 
 #define LOG_INFO(msg) LOG_MESSAGE(INFO, msg)
 

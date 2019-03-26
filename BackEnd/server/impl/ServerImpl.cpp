@@ -37,7 +37,7 @@ bool ServerImpl::sendToClientStdInt32(int32_t) {
 void ServerImpl::setHostAddress(const network::Adress &adress) {
   LOG_TRACE("");
   REQUIRE(mTcpServer, "mTcpServer ivalid.")
-  mTcpServer->setConnectAdress(adress);
+    mTcpServer->setConnectAddress(adress);
 }
 
 }  // namespace server

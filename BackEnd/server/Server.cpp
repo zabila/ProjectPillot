@@ -18,14 +18,14 @@ void Server::setControllers(
   mImpl->setControllers(arg);
 }
 
-network::ServerError Server::setHostAddress(const network::Adress &adress) {
+network::ServerError Server::setHostAddress(const network::Adress &address) {
   LOG_TRACE("");
   REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
-  mImpl->setHostAddress(adress);
+  mImpl->setHostAddress(address);
   return network::ServerError::None;
 }
 
-network::ServerError Server::connectionToHostAdress() {
+network::ServerError Server::connectionToHostAddress() {
   LOG_TRACE("");
   REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
 
