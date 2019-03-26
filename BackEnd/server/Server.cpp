@@ -1,5 +1,7 @@
 #include "Server.h"
 
+#include "Common/logger/logger.h"
+#include "Common/macro.h"
 #include "impl/ServerImpl.h"
 
 // Qt
@@ -7,25 +9,25 @@
 
 namespace server {
 
-void Server::init() {
-  qDebug() << "Init Server";
-  mImpl = std::make_shared<ServerImpl>();
-  mImpl->setHostAddress("127.0.0.1", 9999);
-  mImpl->connectionToHostAdress();
+Server::Server() : mImpl(std::make_shared<ServerImpl>()) { LOG_TRACE(""); }
+
+void Server::setControllers(
+    const std::shared_ptr<ctrl::ServerController> &arg) {
+  LOG_TRACE("");
+  REQUIRE(mImpl, "mImpl invalid.")
+  mImpl->setControllers(arg);
 }
 
-network::ServerError Server::setHostAddress(std::string &host, uint16_t port) {
-  if (!mImpl) {
-    return network::ServerError::Invalid;
-  }
-  mImpl->setHostAddress(std::move(host), std::move(port));
+network::ServerError Server::setHostAddress(const network::Adress &adress) {
+  LOG_TRACE("");
+  REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
+  mImpl->setHostAddress(adress);
   return network::ServerError::None;
 }
 
 network::ServerError Server::connectionToHostAdress() {
-  if (!mImpl) {
-    return network::ServerError::Invalid;
-  }
+  LOG_TRACE("");
+  REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
 
   bool result = mImpl->connectionToHostAdress();
   return result ? network::ServerError::None
@@ -33,17 +35,17 @@ network::ServerError Server::connectionToHostAdress() {
 }
 
 network::ServerError Server::sendToClientStdString(const std::string &text) {
-  if (!mImpl) {
-    return network::ServerError::Invalid;
-  }
+  LOG_TRACE("");
+  REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
+
   bool result = mImpl->sendToClientStdString(text);
   return result ? network::ServerError::None : network::ServerError::Error;
 }
 
 network::ServerError Server::sendToClientStdInt32(int32_t number) {
-  if (!mImpl) {
-    return network::ServerError::Invalid;
-  }
+  LOG_TRACE("");
+  REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
+
   bool result = mImpl->sendToClientStdInt32(number);
   return result ? network::ServerError::None : network::ServerError::Error;
 }

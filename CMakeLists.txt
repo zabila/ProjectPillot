@@ -6,10 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 #Add QT5
-set(CMAKE_AUTOMOC)
-set(CMAKE_INCLUDE_CURRENT_DIR)
-find_package( Qt5 COMPONENTS Core Network REQUIRED)
+find_package( Qt5 COMPONENTS Core Network Gui Widgets Qml Quick REQUIRED)
 
+find_package(easyloggingpp)
 
 set(COMMON_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 set(PROJECT_DIR_BACK_END ${CMAKE_SOURCE_DIR}/BackEnd)

@@ -1,65 +1,73 @@
 #include "TcpServer.h"
 
-#include <QtDebug>
-
 #include <unistd.h>
+
+#include "Common/logger/logger.h"
+#include "Common/macro.h"
 
 namespace network {
 
 TcpServer::TcpServer(QObject *parent) : QObject(parent) {
-  mpQtcpServer = std::make_unique<QTcpServer>();
+  LOG_TRACE("");
+  mpQtcpServer = new QTcpServer();
 
-  connect(mpQtcpServer.get(), SIGNAL(newConnection()), this,
-          SLOT(newConnection()));
-
-  qDebug() << "Constructor TcpServer";
+  connect(mpQtcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
 }
 
-void TcpServer::setConnectAdress(Adress &&adress) {
-  mAdress = std::move(adress);
+TcpServer::~TcpServer() {
+  LOG_TRACE("");
+  delete mpQtcpServer;
+  delete mpQtcpSocket;
 }
 
-bool TcpServer::start_server() {
+void TcpServer::setConnectAdress(const Adress &adress) {
+  LOG_TRACE("");
+  LOG_INFO(adress)
+  mAdress = adress;
+}
+
+bool TcpServer::StartServer() {
+  LOG_TRACE("");
+  REQUIRE_R(mAdress.is_valid(), "Adress invalid.", false);
+  REQUIRE_R(mpQtcpServer, "mpQtcpServer invalid.", false);
+
+  QHostAddress qHostAdress(mAdress.host.c_str());
   bool result = false;
-  if (!mAdress.is_valid()) {
-    qDebug() << "Adress invalid.";
-    return result;
-  }
-  QHostAddress qHostAdress(std::move(mAdress.host.c_str()));
-  qDebug() << "Start server with host:" << qHostAdress
-           << " port:" << mAdress.port;
-
-  if (!mpQtcpServer) {
-    qDebug() << "mpQtcpServer invalid.";
-    return result;
-  }
-
   result =
       mpQtcpServer->listen(QHostAddress(mAdress.host.c_str()), mAdress.port);
 
   if (result) {
-    qDebug() << "Server started.";
+    LOG_INFO("Server started" << mAdress)
   } else {
-    qDebug() << "Server not started.";
+    LOG_ERROR("Server not started.");
+    return result;
   }
+
   return result;
 }
 
 void TcpServer::newConnection() {
-  if (!mpQtcpServer) {
-    qDebug() << "mpQtcpServer invalid.";
+  LOG_TRACE("");
+  REQUIRE(mpQtcpServer, "mpQtcpServer invalid.")
+
+  mpQtcpSocket = mpQtcpServer->nextPendingConnection();
+
+  mpQtcpSocket->write("Client connected.\r\n");
+
+  if (!mpQtcpSocket || !mpQtcpSocket->isValid()) {
+    LOG_ERROR("mpQtcpSocket invalid.");
     return;
   }
 
-  sleep(10000);
+  connect(mpQtcpSocket, &QTcpSocket::readyRead, this, &TcpServer::readyRead);
+}
 
-  QTcpSocket *socket = mpQtcpServer->nextPendingConnection();
+void TcpServer::readyRead() {
+  LOG_TRACE("");
+  while (mpQtcpSocket->bytesAvailable() > 0) {
+    QByteArray array = mpQtcpSocket->readAll();
 
-  socket->write("Hello client\r\n");
-  socket->flush();
-
-  socket->waitForBytesWritten(3000);
-
-  socket->close();
+    mpQtcpSocket->write(array);
+  }
 }
 }  // namespace network

@@ -9,21 +9,15 @@
 namespace network {
 static uint16_t INVALID_PORT;
 struct Adress {
-  Adress() = default;
-  Adress(const Adress&) { std::cout << "Copy" << std::endl; }
-  Adress(const Adress&&) { std::cout << "Move" << std::endl; }
+  Adress();
+  Adress(const std::string& host, uint16_t port);
 
-  Adress operator=(const Adress&) {
-    std::cout << "= Copy" << std::endl;
-    return Adress();
-  }
-  Adress operator=(const Adress&&) {
-    std::cout << "= Move" << std::endl;
-    return Adress();
-  }
+  std::string host;
+  uint16_t port;
 
-  bool is_valid();
+  bool is_valid() const;
 };
+std::ostream& operator<<(std::ostream& stream, const network::Adress& adress);
 
 struct Message {
   network::MessageType mType;

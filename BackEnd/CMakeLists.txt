@@ -11,5 +11,6 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/build/lib)
 
 add_subdirectory(app)
+add_subdirectory(ui)
 add_subdirectory(controller)
 add_subdirectory(server)

@@ -5,6 +5,11 @@
 #include <string>
 
 #include "Common/network/Enums.h"
+#include "Common/network/Types.h"
+
+namespace ctrl {
+class ServerController;
+}
 
 namespace server {
 
@@ -13,9 +18,11 @@ class ServerImpl;
 
 class Server {
  public:
-  void init();
+  Server();
 
-  network::ServerError setHostAddress(std::string &host, uint16_t port);
+  void setControllers(const std::shared_ptr<ctrl::ServerController> &);
+
+  network::ServerError setHostAddress(const network::Adress &adress);
   network::ServerError connectionToHostAdress();
   network::ServerError sendToClientStdString(const std::string &text);
   network::ServerError sendToClientStdInt32(std::int32_t number);

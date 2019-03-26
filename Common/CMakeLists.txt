@@ -6,9 +6,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/build/lib)
 
 file( GLOB HEADERS
+    macro.h
     network/Enums.h
     network/Types.h
     network/Converter.h
+    logger/logger.h
 )
 
 file( GLOB SOURCES

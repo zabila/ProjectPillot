@@ -3,18 +3,18 @@
 #include <iostream>
 
 namespace network {
-enum ServerError {
-    None = 0,
-    Invalid,
-    Error,
-    NotConnected,
-    HostAddressNotValid,
+enum class ServerError : int {
+  None = 0,
+  Invalid,
+  Error,
+  NotConnected,
+  HostAddressNotValid,
 };
 
 enum MessageType {
-    StdString = 0,
-    StdInt32,
+  StdString = 0,
+  StdInt32,
 };
-} // namespace network
+}  // namespace network
 
 std::ostream &operator<<(std::ostream &os, network::ServerError sr);

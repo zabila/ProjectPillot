@@ -1,18 +1,27 @@
 #include <iostream>
+#include <memory>
 
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 
-#include "server/Server.h"
+#include "BackEnd/server/Server.h"
+#include "Common/logger/logger.h"
+#include "controller/ServerCtrl/ServerController.h"
+#include "easylogging++.cc"
+#include "ui/ViewModel.h"
+
+INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
-  server::Server server;
-  server.init();
+  std::shared_ptr<ui::ViewModel> mpUI = std::make_shared<ui::ViewModel>();
+  std::shared_ptr<server::Server> mpServer = std::make_shared<server::Server>();
+  std::shared_ptr<ctrl::ServerController> mpServerCtrl =
+      std::make_shared<ctrl::ServerController>();
 
-  int a;
-  std::cin >> a;
+  mpUI->setControllers(mpServerCtrl);
+  mpServer->setControllers(mpServerCtrl);
+  mpServerCtrl->init(mpServer, mpUI);
 
   return app.exec();
 }

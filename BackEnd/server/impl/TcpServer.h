@@ -14,16 +14,18 @@ class TcpServer : public QObject {
   Q_OBJECT
  public:
   TcpServer(QObject* parent = nullptr);
+  ~TcpServer();
 
-  void setConnectAdress(Adress&& adress);
-
-  bool start_server();
+  void setConnectAdress(const Adress& adress);
+  bool StartServer();
 
  public slots:
   void newConnection();
+  void readyRead();
 
  private:
-  std::unique_ptr<QTcpServer> mpQtcpServer;
+  QTcpServer* mpQtcpServer;
+  QTcpSocket* mpQtcpSocket;
   Adress mAdress;
 };
 }  // namespace network
