@@ -17,7 +17,7 @@ class ServerController {
   void init(const std::shared_ptr<server::Server>& server,
             const std::shared_ptr<ui::ViewModel>& ui);
 
-  void connectToServer(const network::Adress& adress);
+  void connectToServer(const network::Address& adress);
   void onConnectToServer(bool status);
 
  private:

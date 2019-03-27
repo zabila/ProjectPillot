@@ -13,7 +13,7 @@ void ServerController::init(const std::shared_ptr<server::Server>& server,
   mpViewer = ui;
 }
 
-void ServerController::connectToServer(const network::Adress& adress) {
+void ServerController::connectToServer(const network::Address& adress) {
   LOG_TRACE("");
   REQUIRE(adress.is_valid(), "Server adress invalid.");
   REQUIRE(mpServer, "Server invalid.");

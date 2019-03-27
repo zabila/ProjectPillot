@@ -8,16 +8,18 @@
 
 namespace network {
 static uint16_t INVALID_PORT;
-struct Adress {
-  Adress();
-  Adress(const std::string& host, uint16_t port);
+struct Address {
+  Address();
+  Address(const std::string& host, uint16_t port);
 
   std::string host;
   uint16_t port;
 
   bool is_valid() const;
 };
-std::ostream& operator<<(std::ostream& stream, const network::Adress& adress);
+std::ostream& operator<<(std::ostream& stream, const network::Address& address);
+
+static std::uint32_t ClientId;
 
 struct Message {
   network::MessageType mType;

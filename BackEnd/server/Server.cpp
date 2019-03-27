@@ -18,7 +18,7 @@ void Server::setControllers(
   mImpl->setControllers(arg);
 }
 
-network::ServerError Server::setHostAddress(const network::Adress &address) {
+network::ServerError Server::setHostAddress(const network::Address &address) {
   LOG_TRACE("");
   REQUIRE_R(mImpl, "mImpl invalid.", network::ServerError::Invalid);
   mImpl->setHostAddress(address);

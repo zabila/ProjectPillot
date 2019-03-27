@@ -1,71 +1,68 @@
 #include "TcpServer.h"
 
-#include <unistd.h>
-
 #include "Common/logger/logger.h"
 #include "Common/macro.h"
 
 namespace network {
 
-TcpServer::TcpServer(QObject *parent) : QObject(parent) {
-  LOG_TRACE("");
-  qTcpServer = new QTcpServer();
+    TcpServer::TcpServer(QObject *parent) : QObject(parent) {
+        LOG_TRACE("");
+        qTcpServer = new QTcpServer();
 
-  connect(qTcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
-}
+        connect(qTcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    }
 
-TcpServer::~TcpServer() {
-  LOG_TRACE("");
-  delete qTcpServer;
-  delete qTcpSocket;
-}
+    TcpServer::~TcpServer() {
+        LOG_TRACE("");
+        delete qTcpServer;
+    }
 
-void TcpServer::setConnectAddress(const Adress &address) {
-  LOG_TRACE("");
-  LOG_INFO(address)
-  mAddress = address;
-}
+    void TcpServer::setConnectAddress(const Address &address) {
+        LOG_INFO(address)
+        mAddress = address;
+    }
 
-bool TcpServer::StartServer() {
-  LOG_TRACE("");
-  REQUIRE_R(mAddress.is_valid(), "Address invalid.", false);
-  REQUIRE_R(qTcpServer, "qTcpServer invalid.", false);
+    bool TcpServer::StartServer() {
+        LOG_TRACE("");
+        REQUIRE_R(mAddress.is_valid(), "Address invalid.", false);
+        REQUIRE_R(qTcpServer, "qTcpServer invalid.", false);
 
-  bool result = false;
-  result = qTcpServer->listen(QHostAddress(mAddress.host.c_str()), mAddress.port);
+        bool result = false;
+        result = qTcpServer->listen(QHostAddress::Any, mAddress.port);
 
-  if (result) {
-    LOG_INFO("Server started" << mAddress)
-  } else {
-    LOG_ERROR("Server not started.");
-    return result;
-  }
+        if (result) {
+            LOG_INFO("Server started" << mAddress)
+        } else {
+            LOG_ERROR("Server not started.");
+            return result;
+        }
 
-  return result;
-}
+        return result;
+    }
 
-void TcpServer::newConnection() {
-  LOG_TRACE("");
-  REQUIRE(qTcpServer, "qTcpServer invalid.")
+    void TcpServer::newConnection() {
+        LOG_TRACE("");
+        REQUIRE(qTcpServer, "qTcpServer invalid.")
 
-  qTcpSocket = qTcpServer->nextPendingConnection();
+        QTcpSocket *socket = qTcpServer->nextPendingConnection();
+        socket->write("Client connected to Server ProjectPilot.\r\n");
 
-  qTcpSocket->write("Client connected.\r\n");
+        mClients.emplace_back(TcpClient(socket, "Vova Zabila"));
 
-  if (!qTcpSocket || !qTcpSocket->isValid()) {
-    LOG_ERROR("qTcpSocket invalid.");
-    return;
-  }
+        if (!mClients.back().isValid()) {
+            LOG_ERROR("qTcpSocket invalid.");
+            return;
+        }
 
-  connect(qTcpSocket, &QTcpSocket::readyRead, this, &TcpServer::readyRead);
-}
+        connect(mClients.back().getQTcpSocket(), &QTcpSocket::readyRead, this, &TcpServer::readyRead);
+    }
 
-void TcpServer::readyRead() {
-  LOG_TRACE("");
-  while (qTcpSocket->bytesAvailable() > 0) {
-    QByteArray array = qTcpSocket->readAll();
+    void TcpServer::readyRead() {
+        LOG_TRACE("mClients with id " << mClients.back().getId() );
+        while (mClients.back().getQTcpSocket()->bytesAvailable() > 0) {
+            QByteArray array = mClients.back().getQTcpSocket()->readAll();
 
-    qTcpSocket->write(array);
-  }
-}
+            mClients.back().getQTcpSocket()->write(array);
+        }
+    }
 }  // namespace network

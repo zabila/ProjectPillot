@@ -2,18 +2,18 @@
 
 namespace network {
 
-Adress::Adress() : host({}), port(INVALID_PORT) {}
+Address::Address() : host({}), port(INVALID_PORT) {}
 
-Adress::Adress(const std::string &host, uint16_t port)
+Address::Address(const std::string &host, uint16_t port)
     : host(host), port(port) {}
 
-bool Adress::is_valid() const {
+bool Address::is_valid() const {
   auto result = (port != INVALID_PORT) || !host.empty();
   return result;
 };
 
-std::ostream &operator<<(std::ostream &stream, const Adress &adress) {
-  stream << " host: " << adress.host << " port: " << adress.port;
+std::ostream &operator<<(std::ostream &stream, const Address &address) {
+  stream << " host: " << address.host << " port: " << address.port;
   return stream;
 }
 

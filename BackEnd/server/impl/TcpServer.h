@@ -2,12 +2,15 @@
 
 // STD
 #include <memory>
+#include <vector>
 
 // Qt
 #include <QtNetwork>
 
 // Common
 #include "Common/network/Types.h"
+
+#include "TcpClient.h"
 
 namespace network {
 class TcpServer : public QObject {
@@ -16,7 +19,7 @@ class TcpServer : public QObject {
   explicit TcpServer(QObject* parent = nullptr);
   ~TcpServer() override;
 
-  void setConnectAddress(const Adress &address);
+  void setConnectAddress(const Address &address);
   bool StartServer();
 
  public slots:
@@ -25,7 +28,8 @@ class TcpServer : public QObject {
 
  private:
   QTcpServer* qTcpServer;
-  QTcpSocket* qTcpSocket;
-  Adress mAddress;
+
+  Clients mClients;
+  Address mAddress;
 };
 }  // namespace network

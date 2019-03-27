@@ -19,7 +19,7 @@ class ServerImpl {
 
   void setControllers(const std::shared_ptr<ctrl::ServerController> &);
 
-  void setHostAddress(const network::Adress &adress);
+  void setHostAddress(const network::Address &adress);
   bool connectionToHostAdress();
   bool sendToClientStdString(const std::string &text);
   bool sendToClientStdInt32(std::int32_t number);

@@ -12,7 +12,7 @@ void ServerSettingsUI::setServerController(
 }
 
 void ServerSettingsUI::receivedHostAndPort(QString host, quint16 port) {
-  network::Adress adress{host.toStdString(), port};
+  network::Address adress{host.toStdString(), port};
   LOG_INFO("Resived host from qml: " << adress);
   REQUIRE(mpServerController, "Server controller invalid.")
   mpServerController->connectToServer(adress);
