@@ -3,19 +3,17 @@ Project(ServerLib)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-SET(USED_LIBS CommonLib)
+SET(USED_LIBS CommonLib CtrlLib)
 
 file( GLOB HEADERS
     Server.h
     impl/ServerImpl.h
-    impl/TcpServer.h
-    impl/TcpClient.h)
+    impl/TcpServer.h)
 
 file( GLOB SOURCES
     Server.cpp
     impl/ServerImpl.cpp
-    impl/TcpServer.cpp
-    impl/TcpClient.cpp)
+    impl/TcpServer.cpp)
 
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS}  )
 

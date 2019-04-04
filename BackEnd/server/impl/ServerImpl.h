@@ -1,31 +1,24 @@
-#pragma once
+#ifndef SERVERIMPL_H
+#define SERVERIMPL_H
 
 #include <cstdint>
+#include <map>
 #include <memory>
-#include <string>
 
-#include "Common/network/Enums.h"
-#include "Common/network/Types.h"
 #include "TcpServer.h"
-
-namespace ctrl {
-class ServerController;
-}
+#include "controller/Controller.h"
 
 namespace server {
 class ServerImpl {
  public:
-  ServerImpl();
+  ServerImpl(std::shared_ptr<ctrl::Controller> ctrl);
 
-  void setControllers(const std::shared_ptr<ctrl::ServerController> &);
-
-  void setHostAddress(const network::Address &adress);
-  bool connectionToHostAdress();
-  bool sendToClientStdString(const std::string &text);
-  bool sendToClientStdInt32(std::int32_t number);
+  void addListeningPort(std::uint16_t port, std::string name);
 
  private:
-  std::unique_ptr<network::TcpServer> mTcpServer;
-  std::shared_ptr<ctrl::ServerController> mpServerController;
+  std::map<std::string, std::unique_ptr<TcpServer>> mListeners;
+  std::shared_ptr<ctrl::Controller> mpController;
 };
 }  // namespace server
+
+#endif  // SERVERIMPL_H

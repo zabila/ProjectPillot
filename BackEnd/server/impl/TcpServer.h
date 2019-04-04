@@ -1,26 +1,21 @@
 #pragma once
 
-// STD
 #include <memory>
 #include <vector>
 
-// Qt
 #include <QtNetwork>
 
-// Common
-#include "Common/network/Types.h"
+#include "Common/server/Types.h"
 
-#include "TcpClient.h"
-
-namespace network {
+namespace server {
 class TcpServer : public QObject {
   Q_OBJECT
  public:
-  explicit TcpServer(QObject* parent = nullptr);
+  explicit TcpServer(std::uint16_t port = INVALID_PORT,
+                     QObject* parent = nullptr);
   ~TcpServer() override;
 
-  void setConnectAddress(const Address &address);
-  bool StartServer();
+  void listeningPort(std::uint16_t port);
 
  public slots:
   void newConnection();
@@ -28,8 +23,6 @@ class TcpServer : public QObject {
 
  private:
   QTcpServer* qTcpServer;
-
-  Clients mClients;
-  Address mAddress;
+  QTcpSocket* qTcpSocket;
 };
-}  // namespace network
+}  // namespace server

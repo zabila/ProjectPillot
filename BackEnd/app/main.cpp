@@ -1,32 +1,36 @@
 #include <iostream>
 #include <memory>
 
-#include <QGuiApplication>
+#include <QApplication>
 
-#include "BackEnd/server/Server.h"
 #include "Common/logger/logger.h"
-#include "controller/ServerCtrl/ServerController.h"
+#include "controller/Controller.h"
 #include "easylogging++.cc"
-#include "ui/ViewModel.h"
+#include "server/Server.h"
+#include "ui/View.h"
 
 INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
-  QGuiApplication app(argc, argv);
+  QApplication app(argc, argv);
 
+  // Initialization logging
   el::Configurations conf;
-  conf.set(el::Level::Trace, el::ConfigurationType::Format, " %datetime  [%level] %func  %msg ");
-  conf.set(el::Level::Info, el::ConfigurationType::Format,  " %datetime  [%level] %func  MSG: %msg ");
-  conf.set(el::Level::Error, el::ConfigurationType::Format, " %datetime  [%level] %func  %loc MSG: %msg <-------");
+  conf.set(el::Level::Trace, el::ConfigurationType::Format,
+           " %datetime  [%level] %func  %msg ");
+  conf.set(el::Level::Info, el::ConfigurationType::Format,
+           " %datetime  [%level] %func  MSG: %msg ");
+  conf.set(el::Level::Error, el::ConfigurationType::Format,
+           " %datetime  [%level] %func  %loc MSG: %msg <-------");
   el::Loggers::reconfigureAllLoggers(conf);
 
-  std::shared_ptr<ui::ViewModel> mpUI = std::make_shared<ui::ViewModel>();
-  std::shared_ptr<server::Server> mpServer = std::make_shared<server::Server>();
-  std::shared_ptr<ctrl::ServerController> mpServerCtrl = std::make_shared<ctrl::ServerController>();
+  auto mpUI = std::make_shared<ui::View>();
+  auto mpServer = std::make_shared<server::Server>();
+  auto mpController = std::make_shared<ctrl::Controller>();
 
-  mpUI->setControllers(mpServerCtrl);
-  mpServer->setControllers(mpServerCtrl);
-  mpServerCtrl->init(mpServer, mpUI);
+  mpUI->init(mpController);
+  mpServer->init(mpController);
+  mpController->init(mpServer, mpUI);
 
   return app.exec();
 }

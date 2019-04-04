@@ -21,4 +21,3 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 add_subdirectory(BackEnd)
 add_subdirectory(Common)
-add_subdirectory(ClientTank)

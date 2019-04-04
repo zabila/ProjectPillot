@@ -1,25 +1,31 @@
 cmake_minimum_required (VERSION ${CMAKE_VERSION})
-Project(ui)
+Project(UILib)
 
-qt5_add_resources(QT_RESOURCES impl/qml/qml.qrc)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-file( GLOB HEADERS
-    ServerSettingsCard.h
-    ViewModel.h
-    impl/ServerSettingsUI.h)
+file(GLOB_RECURSE SRCS impl/resource/*.cpp)
+file(GLOB_RECURSE HDRS impl/resource/*.h)
+file(GLOB_RECURSE SRUI impl/resource/*.ui)
 
-file( GLOB SOURCES
-    ServerSettingsCard.cpp
-    ViewModel.cpp
-    impl/ServerSettingsUI.cpp)
-
-add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${QT_RESOURCES})
-
-target_link_libraries(${PROJECT_NAME}
+set(USED_LIBS
     CommonLib
-    ServerCtrl
+    CtrlLib
     Qt5::Core
     Qt5::Gui
-    Qt5::Qml
-    Qt5::Quick
-    )
+    Qt5::Widgets)
+
+file( GLOB HEADERS
+    ${HDRS}
+    View.h
+    impl/ViewImpl.h)
+
+file( GLOB SOURCES
+    ${SRCS}
+    View.cpp
+    impl/ViewImpl.cpp)
+
+add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SRUI})
+
+target_link_libraries(${PROJECT_NAME} ${USED_LIBS})
